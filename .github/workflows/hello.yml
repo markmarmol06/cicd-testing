@@ -97,7 +97,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: playwright-typescript
+        working-directory: repo-solution/playwright-typescript
 
     steps:
       - name: Checkout code
@@ -117,7 +117,16 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       # TODO (Module 4): Run Playwright tests using npx playwright test
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=html
+        env:
+          CI: true
       # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
+      - name: Set environment variables
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
 
       # TODO (Module 6): Upload playwright-report/ as a GitHub Actions artifact
 
