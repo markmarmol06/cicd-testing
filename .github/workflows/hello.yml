@@ -1,24 +1,123 @@
-name: Hello World
+# name: Hello World
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     environment: develop
+#     steps:
+#       - run: echo ${{vars.ENV_VAR}}
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: '22'
+#       - name: Install dependencies
+#         run: npm install
+#       - name: Install Playwright browsers
+#         run: npx playwright install --with-deps
+#       - name: Run Playwright tests
+#         run: npx playwright test
+#         env:
+#           CI: true
+#           Base_URL: ${ { secrets.BASE_URL } }
+
+
+name: Playwright Tests + Quality Gates
+
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  test:
+
+  # ── Security Scan — Trivy ──────────────────────────────────────────────────
+  security-scan:
+    name: Security Scan (Trivy)
     runs-on: ubuntu-latest
-    environment: develop
     steps:
-      - run: echo ${{vars.ENV_VAR}}
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # TODO (Module 5): Add Trivy filesystem scan step
+      # Use: aquasecurity/trivy-action@master
+      # Scan type: fs, scan ref: .
+      # Severity: CRITICAL,HIGH — set exit-code: 1 to block the pipeline
+
+  # ── Code Quality — SonarCloud ──────────────────────────────────────────────
+  code-quality:
+    name: Code Quality (SonarCloud)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          node-version: '22'
+          fetch-depth: 0
+
+      # TODO (Module 5): Add SonarCloud scan step
+      # Use: SonarSource/sonarcloud-github-action@master
+      # Requires: SONAR_TOKEN secret set in your repo settings
+
+  # ── Playwright Python ──────────────────────────────────────────────────────
+  # test-python:
+  #   name: Run Tests (Python)
+  #   runs-on: ubuntu-latest
+  #   needs: [security-scan, code-quality]  # Quality gates must pass first
+
+  #   defaults:
+  #     run:
+  #       working-directory: playwright-python
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+      # TODO (Module 3): Set up Python 3.11 using actions/setup-python@v5
+
+      # TODO (Module 3): Install dependencies from requirements.txt
+      # and install Playwright browser: playwright install --with-deps chromium
+
+      # TODO (Module 4): Run pytest with HTML report output
+      # Command: pytest --html=report.html --self-contained-html -v
+      # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
+
+      # TODO (Module 6): Upload report.html as a GitHub Actions artifact
+      # Use: actions/upload-artifact@v4
+      # Make sure it runs even when tests fail (if: always())
+
+  # ── Playwright TypeScript ──────────────────────────────────────────────────
+  test-typescript:
+    name: Run Tests (TypeScript)
+    runs-on: ubuntu-latest
+    needs: [security-scan, code-quality]  # Quality gates must pass first
+
+    defaults:
+      run:
+        working-directory: playwright-typescript
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # TODO (Module 3): Run npm ci to install dependencies
       - name: Install dependencies
         run: npm install
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test
-        env:
-          CI: true
-          Base_URL: ${ { secrets.BASE_URL } }
+
+      # Then install browsers: npx playwright install --with-deps chromium
+
+      # TODO (Module 4): Run Playwright tests using npx playwright test
+      # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
+
+      # TODO (Module 6): Upload playwright-report/ as a GitHub Actions artifact
+
+          
