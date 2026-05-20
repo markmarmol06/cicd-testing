@@ -122,6 +122,12 @@ jobs:
         env:
           CI: true
       # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ vars.BASE_URL || 'https://www.saucedemo.com' }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME || 'standard_user' }}
+          SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD || 'secret_sauce' }}
    
       # TODO (Module 6): Upload playwright-report/ as a GitHub Actions artifact
 
