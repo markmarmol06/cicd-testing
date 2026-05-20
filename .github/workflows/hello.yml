@@ -4,8 +4,19 @@ on:
     branches: [main]
 
 jobs:
-  greet:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Say Hello
-        run: echo "Hello from GitHub Actions!"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          CI: true
+          Base_URL: http://localhost:3000
