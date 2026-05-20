@@ -1,0 +1,15 @@
+{
+  "name": "sdet-cicd-training-ts",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript test suite — SDET CI/CD Training",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright test --reporter=html",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.43.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
