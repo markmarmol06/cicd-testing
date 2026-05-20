@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright browsers
@@ -19,4 +19,4 @@ jobs:
         run: npx playwright test
         env:
           CI: true
-          Base_URL: http://localhost:3000
+          Base_URL: ${ { secrets.BASE_URL } }
