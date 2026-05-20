@@ -130,5 +130,12 @@ jobs:
           SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD || 'secret_sauce' }}
    
       # TODO (Module 6): Upload playwright-report/ as a GitHub Actions artifact
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()  # Upload even if tests fail
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
           
