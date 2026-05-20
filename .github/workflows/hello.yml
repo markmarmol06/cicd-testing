@@ -97,7 +97,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: repo-solution/playwright-typescript
+        working-directory: playwright-typescript
 
     steps:
       - name: Checkout code
@@ -122,12 +122,7 @@ jobs:
         env:
           CI: true
       # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
-      - name: Set environment variables
-        env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
-
+   
       # TODO (Module 6): Upload playwright-report/ as a GitHub Actions artifact
 
           
