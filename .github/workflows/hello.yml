@@ -113,6 +113,8 @@ jobs:
         run: npm install
 
       # Then install browsers: npx playwright install --with-deps chromium
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       # TODO (Module 4): Run Playwright tests using npx playwright test
       # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
