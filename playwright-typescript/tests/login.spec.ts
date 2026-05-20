@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@playwright-typescript/test";
 import { LoginPage } from "../pages/LoginPage";
 
 const USERNAME = process.env.SAUCE_USERNAME || "standard_user";
