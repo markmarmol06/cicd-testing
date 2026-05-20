@@ -135,7 +135,7 @@ jobs:
         if: always()  # Upload even if tests fail
         with:
           name: playwright-report
-          path: playwright-report/
+          path: playwright-typescript/playwright-report/
           retention-days: 7
 
           
