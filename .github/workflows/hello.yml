@@ -118,7 +118,7 @@ jobs:
 
       # TODO (Module 4): Run Playwright tests using npx playwright test
       - name: Run Playwright tests
-        run: npx playwright test --reporter=html
+        run:  npx playwright test
         env:
           CI: true
       # Set these env vars: BASE_URL, SAUCE_USERNAME, SAUCE_PASSWORD
